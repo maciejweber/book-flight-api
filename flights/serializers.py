@@ -10,9 +10,9 @@ class FlightSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['from_location'] = {
-            "city": instance.from_location.display_name, "country": instance.from_location.country.name}
+            "city": instance.from_location.display_name, "country": instance.from_location.country.display_name}
         representation['to_location'] = {
-            "city": instance.to_location.display_name, "country": instance.to_location.country.name}
+            "city": instance.to_location.display_name, "country": instance.to_location.country.display_name}
         return representation
 
     def validate(self, attrs):
@@ -24,7 +24,7 @@ class FlightSerializer(serializers.ModelSerializer):
         if departure_time >= arrival_time:
             raise serializers.ValidationError(
                 {"time": "The time of departure cannot be earlier than the time of arrival"})
-        elif from_location == to_location:
+        if from_location == to_location:
             raise serializers.ValidationError(
                 {"location": "The flight cannot be to the same locations"})
 
