@@ -22,7 +22,7 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
 ]
 
-THIRD_PARTY_APPS = ['rest_framework', 'django_filters', ]
+THIRD_PARTY_APPS = ['rest_framework', 'django_filters']
 
 LOCAL_APPS = ['cities', 'countries', 'flights', 'tickets']
 

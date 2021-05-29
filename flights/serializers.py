@@ -10,9 +10,9 @@ class FlightSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['from_location'] = {
-            "city": instance.from_location.name, "country": instance.from_location.country.name}
+            "city": instance.from_location.display_name, "country": instance.from_location.country.name}
         representation['to_location'] = {
-            "city": instance.to_location.name, "country": instance.to_location.country.name}
+            "city": instance.to_location.display_name, "country": instance.to_location.country.name}
         return representation
 
     def validate(self, attrs):

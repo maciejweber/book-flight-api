@@ -6,7 +6,7 @@ class CitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = City
-        fields = "__all__"
+        fields = ['id', 'display_name']
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
