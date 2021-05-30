@@ -19,3 +19,6 @@ class Ticket(models.Model):
     class Meta:
         verbose_name = "Ticket"
         verbose_name_plural = "Tickets"
+
+    def __str__(self) -> str:
+        return self.user.username
