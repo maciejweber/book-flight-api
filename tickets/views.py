@@ -1,9 +1,11 @@
 from django.shortcuts import render
-from rest_framework import permissions, generics, serializers
+from rest_framework import permissions, generics, status
+from rest_framework.response import Response
 import django_filters.rest_framework
 
 from .models import Ticket
 from .serializers import TicketSerializer
+from .payment import PaymentSerializer
 
 
 class TicketList(generics.ListAPIView):
@@ -26,4 +28,21 @@ class TicketCreate(generics.CreateAPIView):
 
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class PaymentCreate(generics.GenericAPIView):
+    """
+    Create payment for ticket
+    """
+    serializer_class = PaymentSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
