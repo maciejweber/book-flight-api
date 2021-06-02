@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from django.utils import timezone
+from datetime import timedelta
 
-from .models import Ticket
+from tickets.models.ticket import Ticket
+from tickets.tasks import run_disable_reservation_task
 from flights.serializers import FlightSerializer
 
 
@@ -40,11 +42,14 @@ class TicketSerializer(serializers.ModelSerializer):
 
         ticket_type_quantity = getattr(
             instance.flight, "available_{}_class_ticket_quantity".format(instance.type))
-        # TO DO
         # Remove one ticket from available tickets
         setattr(instance.flight, "available_{}_class_ticket_quantity".format(
             instance.type), ticket_type_quantity - 1)
-        # TO DO END
+
         instance.save()
         instance.flight.save()
+
+        execute_at = timezone.now() + timedelta(seconds=5)
+        run_disable_reservation_task.apply_async(
+            args=[instance.id], eta=execute_at)
         return instance

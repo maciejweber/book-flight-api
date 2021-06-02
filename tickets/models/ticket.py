@@ -3,34 +3,9 @@ from django.contrib.auth.models import User
 
 from flights.models import Flight
 from flights.choices import TicketsType
-from .managers import TicketQuerySet
-
-
-class Discount(models.Model):
-    name = models.CharField(verbose_name='Discount name', max_length=50)
-    discount_percentage = models.IntegerField(
-        verbose_name='Discount percentage')
-
-    class Meta:
-        verbose_name = "Discount"
-        verbose_name_plural = "Discounts"
-
-    def __str__(self) -> str:
-        return "{} ({}%)".format(self.name, self.discount_percentage)
-
-
-class Service(models.Model):
-    name = models.CharField(
-        verbose_name='Additional service name', max_length=50)
-    service_price = models.DecimalField(max_digits=7, decimal_places=2,
-                                        verbose_name='Additional service price')
-
-    class Meta:
-        verbose_name = "Service"
-        verbose_name_plural = "Services"
-
-    def __str__(self) -> str:
-        return "{} ({})".format(self.name, self.service_price)
+from tickets.managers import TicketQuerySet
+from tickets.models.discount import Discount
+from tickets.models.service import Service
 
 
 class Ticket(models.Model):
@@ -48,7 +23,7 @@ class Ticket(models.Model):
         Discount, on_delete=models.DO_NOTHING, related_name="tickets", blank=True, null=True)
 
     service = models.ManyToManyField(
-        Service, related_name="tickets", blank=True, null=True)
+        Service, related_name="tickets", blank=True)
 
     objects = TicketQuerySet.as_manager()
 

@@ -1,8 +1,16 @@
 from rest_framework import serializers
+from rest_framework import fields
+from datetime import timedelta
+from django.utils import timezone
+
 from .models import Flight
+from .choices import TicketsType
+from .tasks import activate_flight_at_task
 
 
 class FlightSerializer(serializers.ModelSerializer):
+    tickets_type = fields.MultipleChoiceField(choices=TicketsType.CHOICES)
+
     class Meta:
         model = Flight
         fields = '__all__'
@@ -29,3 +37,10 @@ class FlightSerializer(serializers.ModelSerializer):
                 {"location": "The flight cannot be to the same locations"})
 
         return attrs
+
+    def create(self, validated_data):
+        instance = super().create(validated_data)
+        if instance.activate_at:
+            activate_flight_at_task.apply_async(
+                args=[instance.id], eta=instance.activate_at)
+        return instance

@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import Ticket, Discount, Service
+from tickets.models.ticket import Ticket
+from tickets.models.discount import Discount
+from tickets.models.service import Service
 
 admin.site.register(Ticket)
 admin.site.register(Discount)

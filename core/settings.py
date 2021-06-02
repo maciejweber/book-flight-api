@@ -22,7 +22,8 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
 ]
 
-THIRD_PARTY_APPS = ['rest_framework', 'django_filters']
+THIRD_PARTY_APPS = ['rest_framework',
+                    'django_filters', 'multiselectfield', 'drf_yasg']
 
 LOCAL_APPS = ['cities', 'countries', 'flights', 'tickets']
 
@@ -113,3 +114,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

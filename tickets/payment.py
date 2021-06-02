@@ -1,24 +1,5 @@
-from django.core.exceptions import ValidationError
-from rest_framework import serializers
-
-from .models import Ticket
+from tickets.models.ticket import Ticket
 from .exceptions import TokenError, BalanceError
-
-
-class PaymentSerializer(serializers.Serializer):
-    token = serializers.CharField()
-    ticket = serializers.PrimaryKeyRelatedField(
-        queryset=Ticket.objects.unpaid())
-    amount = serializers.IntegerField()
-
-    def validate(self, attrs):
-        token = attrs.get('token')
-        ticket = attrs.get('ticket')
-        amount = attrs.get('amount')
-
-        PaymentGateway().payment(ticket, token, amount)
-
-        return attrs
 
 
 class PaymentGateway:
