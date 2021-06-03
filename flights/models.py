@@ -27,6 +27,13 @@ class Flight(models.Model):
     first_class_ticket_price = models.DecimalField(decimal_places=2, max_digits=12, validators=[MinValueValidator(Decimal('0.00'))],
                                                    verbose_name='First class ticket price', default=0)
 
+    second_class_ticket_quantity = models.PositiveIntegerField(
+        verbose_name='Second class ticket quantity', default=0)
+    available_second_class_ticket_quantity = models.PositiveIntegerField(
+        verbose_name='Second class ticket quantity', blank=True)
+    second_class_ticket_price = models.DecimalField(decimal_places=2, max_digits=12, validators=[MinValueValidator(Decimal('0.00'))],
+                                                    verbose_name='Second class ticket price', default=0)
+
     is_active = models.BooleanField(
         verbose_name="Flight is active", default=False)
     activate_at = models.DateTimeField(
