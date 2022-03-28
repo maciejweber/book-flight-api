@@ -14,7 +14,6 @@ env = environ.Env(
 BASE_DIR = Path(__file__).resolve().parent.parent
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env('SECRET_KEY')
-# SECRET_KEY = '%^#q_@(8d!8%$l#y=tqg8l_egqxn$+rv#xiqu02@-zg16uc(m^'
 DEBUG = True
 ALLOWED_HOSTS = []
 
